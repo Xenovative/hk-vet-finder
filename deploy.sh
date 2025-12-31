@@ -23,7 +23,10 @@ echo "📦 Installing dependencies..."
 npm install --frozen-lockfile || npm install
 
 echo "🏗️ Building the application..."
-npm run build
+npm run build || { echo "❌ Build failed!"; exit 1; }
+
+# Create logs directory if it doesn't exist (for ecosystem.config.js)
+mkdir -p logs
 
 echo "🔄 Restarting application with PM2..."
 # If the app is already running, it will reload. If not, it will start.
@@ -33,4 +36,5 @@ echo "💾 Saving PM2 process list..."
 pm2 save
 
 echo "✅ Deployment successful!"
-echo "📡 App is running on port 3000 (or as configured in ecosystem.config.js)"
+echo "📡 App is running. Check status with: pm2 status"
+echo "📝 View logs with: pm2 logs hk-vet-finder --lines 50"
